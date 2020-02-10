@@ -83,6 +83,7 @@ export class GitTimelineProvider implements TimelineProvider {
 			dateFormatter = dayjs(c.authorDate);
 
 			const item = new TimelineItem(message, c.authorDate?.getTime() ?? 0);
+			item.contextValue = 'git:file:commit';
 			item.id = c.hash;
 			item.iconPath = new (ThemeIcon as any)('git-commit');
 			item.description = `${dateFormatter.fromNow()}  \u2022  ${c.authorName}`;
@@ -124,6 +125,7 @@ export class GitTimelineProvider implements TimelineProvider {
 			}
 
 			const item = new TimelineItem('Staged Changes', date.getTime());
+			item.contextValue = 'git:file:index';
 			item.id = 'index';
 			// TODO[ECA]: Replace with a better icon -- reflecting its status maybe?
 			item.iconPath = new (ThemeIcon as any)('git-commit');
@@ -167,6 +169,7 @@ export class GitTimelineProvider implements TimelineProvider {
 			}
 
 			const item = new TimelineItem('Uncommited Changes', date.getTime());
+			item.contextValue = 'git:file:working';
 			item.id = 'working';
 			// TODO[ECA]: Replace with a better icon -- reflecting its status maybe?
 			item.iconPath = new (ThemeIcon as any)('git-commit');

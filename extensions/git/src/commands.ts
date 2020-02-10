@@ -6,7 +6,7 @@
 import { lstat, Stats } from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import { commands, Disposable, LineChange, MessageOptions, OutputChannel, Position, ProgressLocation, QuickPickItem, Range, SourceControlResourceState, TextDocumentShowOptions, TextEditor, Uri, ViewColumn, window, workspace, WorkspaceEdit, WorkspaceFolder } from 'vscode';
+import { commands, Disposable, LineChange, MessageOptions, OutputChannel, Position, ProgressLocation, QuickPickItem, Range, SourceControlResourceState, TextDocumentShowOptions, TextEditor, Uri, ViewColumn, window, workspace, WorkspaceEdit, WorkspaceFolder, TimelineItem } from 'vscode';
 import TelemetryReporter from 'vscode-extension-telemetry';
 import * as nls from 'vscode-nls';
 import { Branch, GitErrorCodes, Ref, RefType, Status, CommitOptions } from './api/git';
@@ -2346,6 +2346,14 @@ export class CommandCenter {
 		}
 
 		return commands.executeCommand('vscode.diff', toGitUri(uri, lhs), rhs === '' ? uri : toGitUri(uri, rhs), title);
+	}
+
+	@command('git.openTimelineDiff', { repository: false })
+	async openTimelineDiff(item: TimelineItem) {
+		if (item?.command === undefined) {
+			return undefined;
+		}
+		return commands.executeCommand(item.command.command, ...(item.command.arguments ?? []));
 	}
 
 	private createCommand(id: string, key: string, method: Function, options: CommandOptions): (...args: any[]) => any {
